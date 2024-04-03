@@ -1,4 +1,5 @@
-#INTRODUCTION
+INTRODUCTION:
+
 Get football newz, transfers and tables blazingly fast.
 
 run: `goal table [leaguename]`
