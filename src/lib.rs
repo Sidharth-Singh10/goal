@@ -40,7 +40,7 @@ pub fn print_breaking() {
     let news = scrape_news(BREAKING);
 
     println!("Breaking News");
-    for (i, item) in news.iter().enumerate().take(10) {
+    for (i, item) in news.iter().enumerate().take(15) {
         println!("{}. {}", i + 1, item.heading.as_ref().unwrap_or(&String::new()));
     }
 }
@@ -49,7 +49,7 @@ pub fn print_transfers() {
     let news = scrape_news(TRANSFERS);
 
     println!("Transfer News");
-    for (i, item) in news.iter().enumerate().take(10) {
+    for (i, item) in news.iter().enumerate().take(15) {
         println!("{}. {}", i + 1, item.heading.as_ref().unwrap_or(&String::new()));
     }
 }

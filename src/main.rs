@@ -6,9 +6,6 @@ use goal::print_transfers;
 use tables::choose_table;
 // use tries::print_table;
 mod tables;
-const LALIGA: &str = "https://www.skysports.com/la-liga-table";
-
-mod tries;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
