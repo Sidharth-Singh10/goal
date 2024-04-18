@@ -40,6 +40,8 @@ fn main() {
             "premier" => choose_table("premier"),
             "serieA" => choose_table("serieA"),
             "ligue1" => choose_table("ligue1"),
+            "bundesliga" => choose_table("bundesliga"),
+            "dutch" => choose_table("dutch"),
             _  => println!("Google karle"),
 
           }

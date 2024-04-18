@@ -3,10 +3,12 @@ use scraper::{Html, Selector};
 
 const LALIGA: &str = "https://www.skysports.com/la-liga-table";
 const PREMIER: &str = "https://www.skysports.com/premier-league-table";
-const SERIEA:&str = "https://www.skysports.com/serie-a-table";
-const LIGUE1:&str = "https://www.skysports.com/ligue-1-table";
+const SERIEA: &str = "https://www.skysports.com/serie-a-table";
+const LIGUE1: &str = "https://www.skysports.com/ligue-1-table";
+const BUNDESLIGA: &str = "https://www.skysports.com/bundesliga-table";
+const DUTCH: &str = "https://www.skysports.com/eredivisie-table";
 
-use tabled::{Tabled, Table};
+use tabled::{Table, Tabled};
 
 #[derive(Tabled)]
 struct LeagueTable {
@@ -37,7 +39,7 @@ fn get_table(url: &str) -> Vec<LeagueTable> {
             team: String::new(),
             played: String::new(),
             won: String::new(),
-            drawn:String::new(),
+            drawn: String::new(),
             lost: String::new(),
             goalfor: String::new(),
             goalagainst: String::new(),
@@ -74,27 +76,20 @@ fn get_table(url: &str) -> Vec<LeagueTable> {
     rows
 }
 
- fn print_table(choice:&str)
-{
-    let rows  = get_table(choice);
+fn print_table(choice: &str) {
+    let rows = get_table(choice);
     let table = Table::new(rows).to_string();
-    println!("{}",table);
+    println!("{}", table);
 }
 
-
-
-pub fn choose_table(choice:&str)
-{
-
-    match choice
-    {
+pub fn choose_table(choice: &str) {
+    match choice {
         "laliga" => print_table(LALIGA),
         "premier" => print_table(PREMIER),
         "serieA" => print_table(SERIEA),
         "ligue1" => print_table(LIGUE1),
+        "bundesliga" => print_table(BUNDESLIGA),
+        "dutch" => print_table(DUTCH),
         _ => println!("Error dene ka mann kar raha tha"),
     }
-      
-
-  
 }
