@@ -2,7 +2,7 @@ use std::env;
 use std::process;
 
 use goal::print_breaking;
-use goal::print_transfers;
+// use goal::print_transfers;
 use tables::choose_table;
 // use tries::print_table;
 mod tables;
@@ -19,10 +19,15 @@ fn main() {
         let command = &args[1];
 
         match &command[..] {
-            "breaking" => print_breaking(),
-            "transfers" => print_transfers(),
-            _ => println!("itna tho hme bhi nahi pta"),
-        }
+          "breaking" => {
+              if let Err(err) = print_breaking() {
+                  eprintln!("Error printing breaking news: {:?}", err);
+              }
+          },
+          // "transfers" => print_transfers(),
+          _ => println!("itna tho hme bhi nahi pta"),
+      }
+      
     }
 
     if args.len() == 3
