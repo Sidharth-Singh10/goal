@@ -9,7 +9,6 @@ use ratatui::{
     widgets::{block::*, *},
 };
 use std::io;
-
 use reqwest::blocking::get;
 use scraper::{Html, Selector};
 
@@ -82,24 +81,39 @@ impl App {
     fn handle_key_event(&mut self, key_event: KeyEvent) {
         match key_event.code {
             KeyCode::Char('q') => self.exit(),
-            KeyCode::Char('n') => {
+            KeyCode::Down => {
                 self.next();
                 self.items.select_item()
             }
-            KeyCode::Char('m') => {
+            KeyCode::Up => {
                 self.previous();
                 self.items.select_item()
+            }
+            KeyCode::Enter =>
+            {
+                self.popup_open();
+            }
+            KeyCode::Backspace =>
+            {
+                self.popup_close();
             }
 
             _ => {}
         }
     }
+    fn popup_open(&mut self) {
+        self.items.clicked = true;
+    }
+    fn popup_close(&mut self) {
+        self.items.clicked = false;
+    }
+    
 
     fn exit(&mut self) {
         self.exit = true;
     }
     fn next(&mut self) {
-        if self.items.current == 1 {
+        if self.items.current == 14 {
 
             self.items.current = 0;
         } else {
@@ -118,6 +132,26 @@ impl App {
 fn ui(f: &mut Frame, app: &mut App) {
     let chunks = f.size();
     
+    let popup_block = Block::default()
+            .borders(Borders::ALL)
+            .style(Style::default().bg(Color::Reset));
+
+        // let area = centered_rect(60, 25, f.size());
+        let heading  = app.items.items[app.items.current].heading.clone().unwrap();
+        
+        let title = Paragraph::new(heading.bold().red())
+        .block(popup_block)
+        .alignment(Alignment::Center);
+
+    let pop = app.items.clicked;
+
+    if pop
+    {
+        f.render_widget(title,  chunks);
+    }
+
+
+
     let items: Vec<ListItem> = app
         .items
         .items
@@ -142,9 +176,38 @@ fn ui(f: &mut Frame, app: &mut App) {
                 .add_modifier(Modifier::BOLD),
         )
         .highlight_symbol(">> ");
+        if !pop{    
+            f.render_stateful_widget(items_list, chunks, &mut app.items.state);
 
-    f.render_stateful_widget(items_list, chunks, &mut app.items.state)
+
+        }
+
+    
 }
+
+
+/// helper function to create a centered rect using up certain percentage of the available rect `r`
+// fn centered_rect(percent_x: u16, percent_y: u16, r: Rect) -> Rect {
+//     // Cut the given rectangle into three vertical pieces
+//     let popup_layout = Layout::default()
+//         .direction(Direction::Vertical)
+//         .constraints([
+//             Constraint::Percentage((100 - percent_y) / 2),
+//             Constraint::Percentage(percent_y),
+//             Constraint::Percentage((100 - percent_y) / 2),
+//         ])
+//         .split(r);
+
+//     // Then cut the middle vertical piece into three width-wise pieces
+//     Layout::default()
+//         .direction(Direction::Horizontal)
+//         .constraints([
+//             Constraint::Percentage((100 - percent_x) / 2),
+//             Constraint::Percentage(percent_x),
+//             Constraint::Percentage((100 - percent_x) / 2),
+//         ])
+//         .split(popup_layout[1])[1] // Return the middle chunk
+// }
 
 fn scrape_news(url: &str) -> Vec<Newz> {
     let response = get(url).unwrap();
